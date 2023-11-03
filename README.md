@@ -67,12 +67,12 @@ Once you have the project up and running with `docker-compose up`, you can inter
 - **Accessing server via load balancer**: The load balancer is accessible at `http://localhost`. You can send HTTP requests to this URL to interact with the servers.
     Useful endpoints are:
     - **GET /**: Returns a simple hello world message.
-    - **GET /template**: Add a job to the queue and returns a html template. You can set up a GET with JSON payload as following 
-        > GET http://localhost:80/template
-        > content-type: application/json
-        > {
-        >     "name": "John Doe"
-        > }
+    - **GET /template**: Add a job to the queue and returns a html template. You can set up a GET with JSON payload as following
+
+        ```bash
+        curl -X GET -H "Content-Type: application/json" -d '{"name":"John Doe"}' http://localhost:80/template
+        ```
+
     - **GET /admin**: Returns the dashboard of the BullMQ queue.
 
 - **Accessing the servers directly**: The servers are accessible at `http://localhost:3000` and `http://localhost:3001`. You can send HTTP requests to these URLs to interact with the servers. `GET /` and `GET /template` are the same as above.
