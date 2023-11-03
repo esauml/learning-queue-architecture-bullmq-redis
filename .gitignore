@@ -19,3 +19,7 @@ yarn-error.log*
 # IDE
 .idea
 .vscode
+
+# prod env
+/nginx
+/redis

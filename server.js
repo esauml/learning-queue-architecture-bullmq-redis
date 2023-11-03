@@ -11,8 +11,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/template", async (req, res) => {
-	// from name from json payload
 	const { name } = req.body;
+	console.log("Request received for template", name);
 	try {
 		const html = await addTemplateEngineJob(name);
 		res.send(html);

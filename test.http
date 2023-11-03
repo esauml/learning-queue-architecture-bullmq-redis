@@ -1,0 +1,14 @@
+# GET hello world
+GET http://localhost:80/
+
+###
+
+# GET template. Send Job queue
+GET http://localhost:80/template
+content-type: application/json
+
+{
+    "name": "John Doe"
+}
+
+###
