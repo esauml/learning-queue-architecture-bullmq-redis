@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis:/data
+    command: redis-server --appendonly yes
+
+  server-one:
+    container_name: server-one
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+
+  server-two:
+    container_name: server-two
+    build: .
+    ports:
+      - "3001:3000"
+    depends_on:
+      - redis
+
+  worker-one:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    depends_on:
+      - redis
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - server-one
+      - server-two
