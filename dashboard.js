@@ -6,7 +6,7 @@ import { createBullBoard } from "@bull-board/api";
 
 const redisOptions = {
   connection: {
-    host: "localhost",
+    host: "redis",
     port: 6379,
   },
 };
@@ -23,6 +23,6 @@ createBullBoard({
 
 app.use("/admin", serverAdapter.getRouter());
 
-app.listen(1111, () => {
-  console.log("Server started on port 1111");
+app.listen(3000, () => {
+  console.log("Server started on port 3000");
 });
