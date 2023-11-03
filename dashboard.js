@@ -1,27 +1,28 @@
-const express = require("express");
-const Queue = require("bull");
-const { createBullBoard } = require("@bull-board/api");
-const { BullAdapter } = require("@bull-board/api/bullAdapter");
-const { ExpressAdapter } = require("@bull-board/express");
+import express from "express";
+import { Queue } from "bullmq";
+import { ExpressAdapter } from "@bull-board/express";
+import { BullMQAdapter } from "@bull-board/api/bullMQAdapter.js";
+import { createBullBoard } from "@bull-board/api";
 
-const queue = new Queue("myQueue");
-
-const serverAdapter = new ExpressAdapter();
-serverAdapter.setBasePath("/admin/queues");
-
-const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
-	queues: [new BullAdapter(queue)],
-	serverAdapter: serverAdapter,
-});
+const redisOptions = {
+  connection: {
+    host: "localhost",
+    port: 6379,
+  },
+};
 
 const app = express();
+const queue = new Queue("templateEngine", redisOptions);
+const serverAdapter = new ExpressAdapter();
+serverAdapter.setBasePath("/admin");
 
-app.use("/admin/queues", serverAdapter.getRouter());
+createBullBoard({
+  queues: [new BullMQAdapter(queue)],
+  serverAdapter,
+});
 
-// other configurations of your server
+app.use("/admin", serverAdapter.getRouter());
 
-app.listen(3000, () => {
-	console.log("Running on 3000...");
-	console.log("For the UI, open http://localhost:3000/admin/queues");
-	console.log("Make sure Redis is running on port 6379 by default");
+app.listen(1111, () => {
+  console.log("Server started on port 1111");
 });
